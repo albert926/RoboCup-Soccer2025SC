@@ -1,3 +1,5 @@
 git add .
 git commit -m "Add test.txt"            # Commit the file
-git push -u origin main.                # Push to the remote
+git push -u origin main                 # Push to the remote
+git remote set-url origin https://www.alberttalkstech.com/git/albert/RoboCup-Soccer.git
+57b0c01779b4ba537a543cb0adfc846dc63a3362
