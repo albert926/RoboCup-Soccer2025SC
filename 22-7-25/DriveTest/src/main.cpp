@@ -35,7 +35,7 @@ void loop() {
     // Control motor B
     digitalWrite(mb1, HIGH);
     digitalWrite(mb2, LOW);
-    delay(1000); // Run motor B for 1 second
+    delay(200); // Run motor B for 1 second
     digitalWrite(mb1, LOW);
     digitalWrite(mb2, LOW);
 
