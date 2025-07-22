@@ -20,7 +20,7 @@ void loop() {
     // Control motor A
     digitalWrite(ma1, HIGH);
     digitalWrite(ma2, LOW);
-    delay(200); // Run motor A for 1 second
+    delay(200); // Run motor A for 200 milliseconds
     digitalWrite(ma1, LOW);
     digitalWrite(ma2, LOW);
 
@@ -28,7 +28,7 @@ void loop() {
 
     digitalWrite(ma1, LOW);
     digitalWrite(ma2, HIGH);
-    delay(200); // Run motor A in reverse for 1 second
+    delay(200); // Run motor A in reverse for 200 milliseconds
     digitalWrite(ma1, LOW);
     digitalWrite(ma2, LOW);
 
