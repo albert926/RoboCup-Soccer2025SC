@@ -32,16 +32,17 @@ void setup() {
 }
 
 void loop() {
-  for (int i = 0; i < 4; i++) {
-      forward(); // Move forward
-      delay(1000); // Move forward for 1 seconds
-      Stop(); // Stop before turning
-      delay(1000); // Wait for a moment before turning
-      turnRight();
-      Stop(); // Stop before increasing speed
-      Serial.print("Completed square ");
-      speed += speedIncrement;
-  }
+  // for (int i = 0; i < 4; i++) {
+  //     forward(); // Move forward
+  //     delay(1000); // Move forward for 1 seconds
+  //     Stop(); // Stop before turning
+  //     delay(1000); // Wait for a moment before turning
+  //     turnRight();
+  //     Stop(); // Stop before increasing speed
+  //     Serial.print("Completed square ");
+  //     speed += speedIncrement;
+  // }
+  Serial.println(digitalRead(button));
 }
 
 void Move(int left, int right) {
