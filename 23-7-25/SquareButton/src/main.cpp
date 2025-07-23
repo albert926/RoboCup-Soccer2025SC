@@ -83,10 +83,10 @@ void forward() {
 }
 
 void turnRight() {
-  digitalWrite(ma1, HIGH);
+  analogWrite(ma1, 150);
   digitalWrite(ma2, LOW);
-  digitalWrite(mb1, LOW);
-  digitalWrite(mb2, HIGH);
+  analogWrite(mb1, 0); // Stop right motor
+  digitalWrite(mb2, LOW);
   delay(500); // Adjust delay for turning speed
   Stop();
   delay(1000); // Wait before next action
