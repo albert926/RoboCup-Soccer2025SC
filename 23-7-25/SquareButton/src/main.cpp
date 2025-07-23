@@ -13,6 +13,7 @@ const uint8_t mb1 = 5;
 const uint8_t mb2 = 6;
 const uint8_t speedIncrement = 10; // Speed increment for each square
 uint8_t speed = 80; // Initial speed
+const uint8_t turnDelay = 450; // Delay for turning
 
 void Move(int left, int right);
 void forward();
@@ -85,7 +86,7 @@ void forward() {
 
 void turnRight() {
   Move(150, 0); // Left motor at speed, right motor stopped
-  delay(500); // Adjust delay for turning speed
+  delay(turnDelay); // Adjust delay for turning speed
   Stop();
   delay(1000); // Wait before next action
 }
