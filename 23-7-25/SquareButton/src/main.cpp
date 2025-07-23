@@ -1,6 +1,7 @@
 /*
 Make robot start with pushbutton and then go in square four times each time increasing the speed to max.
 www.alberttalkstech.com
+https://git.alberttalkstech.com/albert/RoboCup-Soccer
 */
 
 #include <Arduino.h>
@@ -77,17 +78,13 @@ void Stop() {
 }
 
 void forward() {
-  analogWrite(ma1, speed);
-  digitalWrite(ma2, LOW);
-  analogWrite(mb1, speed);
-  digitalWrite(mb2, LOW);
+  Move(speed, speed); // Move both motors forward at the current speed
+  Serial.print("Moving forward at speed: ");
+  Serial.println(speed);
 }
 
 void turnRight() {
-  analogWrite(ma1, 150);
-  digitalWrite(ma2, LOW);
-  analogWrite(mb1, 0); // Stop right motor
-  digitalWrite(mb2, LOW);
+  Move(150, 0); // Left motor at speed, right motor stopped
   delay(500); // Adjust delay for turning speed
   Stop();
   delay(1000); // Wait before next action
