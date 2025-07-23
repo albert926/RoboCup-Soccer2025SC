@@ -13,7 +13,6 @@ Anything that could help you remember or help someone learn what you're doing
 //The difference is that a compiler may not optimize global constants so will use memory to store them.
 //However, global constants are easier to troubleshoot if you are doing more than just naming.
 
-const uint8_t BuiltinLedPin = 13;
 const uint16_t BlinkDelay = 1000; //Long delay 
 const uint16_t BlinkDelayShort = 250; //Short delay
 //the use of global constants like the one above will allow you to adjust parameters easily on your robot
@@ -31,7 +30,7 @@ void blinkBuiltinLed();
 //this defines the setup fucntion;it is called only once by the core
 void setup()
 {
-  pinMode(BuiltinLedPin, OUTPUT);
+  pinMode(9, OUTPUT);
 }
 
 //this defines the loop function; it is called in an infinite loop by the core
@@ -42,10 +41,10 @@ void loop()
 
 //write your custom funciton definitions at the bottom. These are unlikely to change once they're tested and perfected.
 void blinkBuiltinLed(){
-  digitalWrite(BuiltinLedPin, HIGH);
+  digitalWrite(9, HIGH);
   ledState = 1; //this is redundant since the state will always be back to 0 when function returns (unless it is used in an interrupt service routine!), just an example of using a global variable.
   delay(BlinkDelay);
-  digitalWrite(BuiltinLedPin, LOW);
+  digitalWrite(9, LOW);
   ledState = 0;
   delay(BlinkDelayShort);
 }
