@@ -14,6 +14,9 @@ const uint8_t mb2 = 6;
 const uint8_t speedIncrement = 10; // Speed increment for each square
 uint8_t speed = 80; // Initial speed
 
+void Move();
+void Stop();
+
 void setup() {
   Serial.begin(9600);
   pinMode(button, INPUT_PULLUP); // Set button pin as input with pull-up resistor
@@ -66,5 +69,8 @@ void Move(int left, int right) {
 }
 
 void Stop() {
-  Move(0, 0);
+  digitalWrite(ma1, HIGH);
+  digitalWrite(ma2, HIGH);
+  digitalWrite(mb1, HIGH);
+  digitalWrite(mb2, HIGH);
 }
