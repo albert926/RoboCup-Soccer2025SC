@@ -25,7 +25,6 @@
 
 HUSKYLENS huskylens;
 SoftwareSerial mySerial(1, 0); // RX, TX
-//HUSKYLENS green line >> Pin 10; blue line >> Pin 11
 void printResult(HUSKYLENSResult result);
 
 void setup() {
