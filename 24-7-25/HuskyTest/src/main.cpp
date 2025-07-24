@@ -24,10 +24,13 @@
 #include "SoftwareSerial.h"
 
 HUSKYLENS huskylens;
+SoftwareSerial mySerial(1, 0); // RX, TX
+//HUSKYLENS green line >> Pin 10; blue line >> Pin 11
 void printResult(HUSKYLENSResult result);
 
 void setup() {
-    Serial.begin(9600);
+    Serial.begin(115200);
+    mySerial.begin(9600);
     while (!huskylens.begin(mySerial))
     {
         Serial.println(F("Begin failed!"));
