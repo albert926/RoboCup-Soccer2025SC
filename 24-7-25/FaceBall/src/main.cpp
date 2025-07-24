@@ -34,15 +34,15 @@ const uint8_t ma2 = 2;
 const uint8_t mb1 = 5;
 const uint8_t mb2 = 6;
 
-uint8_t x;
-uint8_t y;
-uint8_t w;
-uint8_t h;
-uint8_t id;
-uint8_t x0;
-uint8_t y0;
-uint8_t x1;
-uint8_t y1;
+uint8_t x_husky;
+uint8_t y_husky;
+uint8_t w_husky;
+uint8_t h_husky;
+uint8_t id_husky;
+uint8_t x0_husky;
+uint8_t y0_husky;
+uint8_t x1_husky;
+uint8_t y1_husky;
 
 const uint8_t setpoint = 160; // Example: center of 320px image
 
@@ -61,7 +61,7 @@ void setup() {
         delay(100);
     }
     xPID.setTunings(1.0, 0.0, 0.0); // Kp, Ki, Kd (tune as needed)
-    xPID.setOutputLimits(-125, 125); // Example: for motor PWM
+    xPID.setOutputLimits(-30, 30); // Example: for motor PWM
     xPID.setSampleTime(20); // 10 ms sample time
     pinMode(ma1, OUTPUT);
     pinMode(ma2, OUTPUT);
@@ -84,10 +84,10 @@ void loop() {
     }
 
     readHusky();
-    float pidOutput = xPID.compute(setpoint, x);
+    float pidOutput = xPID.compute(setpoint, x_husky);
     Serial.print("PID Output: ");
     Serial.println(pidOutput);
-    Move(pidOutput, -pidOutput);
+    Move(-pidOutput, pidOutput);
 }
 
 void printResult(HUSKYLENSResult result){
@@ -136,16 +136,16 @@ void Stop() {
 void readHusky() {
     HUSKYLENSResult result = huskylens.read();
     if (result.command == COMMAND_RETURN_BLOCK) {
-        x = result.xCenter;
-        y = result.yCenter;
-        w = result.width;
-        h = result.height;
-        id = result.ID;
+        x_husky = result.xCenter;
+        y_husky = result.yCenter;
+        w_husky = result.width;
+        h_husky = result.height;
+        id_husky = result.ID;
     } else if (result.command == COMMAND_RETURN_ARROW) {
-        x0 = result.xOrigin;
-        y0 = result.yOrigin;
-        x1 = result.xTarget;
-        y1 = result.yTarget;
-        id = result.ID;
+        x0_husky = result.xOrigin;
+        y0_husky = result.yOrigin;
+        x1_husky = result.xTarget;
+        y1_husky = result.yTarget;
+        id_husky = result.ID;
     }
 }
