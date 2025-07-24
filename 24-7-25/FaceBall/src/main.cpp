@@ -22,7 +22,9 @@
 #include "Arduino.h"
 #include "HUSKYLENS.h"
 #include "SoftwareSerial.h"
+#include "PID.h"
 
+PID pitchPID = PID();
 HUSKYLENS huskylens;
 SoftwareSerial mySerial(1, 0); // RX, TX
 void printResult(HUSKYLENSResult result);
