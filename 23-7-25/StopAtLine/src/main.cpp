@@ -6,7 +6,7 @@ https://git.alberttalkstech.com/albert/RoboCup-Soccer
 
 #include <Arduino.h>
 
-const uint8_t button = 4; // Change 4 to your actual button pin
+const uint8_t button = 6; // Change 6 to your actual button pin
 const uint8_t ma1 = 3;
 const uint8_t ma2 = 2;
 const uint8_t mb1 = 5;
