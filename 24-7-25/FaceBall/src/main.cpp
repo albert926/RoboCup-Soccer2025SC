@@ -24,10 +24,18 @@
 #include "SoftwareSerial.h"
 #include "PID.h"
 
-PID pitchPID = PID();
+PID xPID = PID();
 HUSKYLENS huskylens;
 SoftwareSerial mySerial(1, 0); // RX, TX
 void printResult(HUSKYLENSResult result);
+
+const uint8_t ma1 = 3;
+const uint8_t ma2 = 2;
+const uint8_t mb1 = 5;
+const uint8_t mb2 = 6;
+
+void Move(int left, int right);
+void Stop();
 
 void setup() {
     Serial.begin(115200);
@@ -39,6 +47,13 @@ void setup() {
         Serial.println(F("2.Please recheck the connection."));
         delay(100);
     }
+    xPID.setTunings(1.0, 0.0, 0.0); // Kp, Ki, Kd (tune as needed)
+    xPID.setOutputLimits(-125, 125); // Example: for motor PWM
+    xPID.setSampleTime(20); // 10 ms sample time
+    pinMode(ma1, OUTPUT);
+    pinMode(ma2, OUTPUT);
+    pinMode(mb1, OUTPUT);
+    pinMode(mb2, OUTPUT);
 }
 
 void loop() {
@@ -54,6 +69,11 @@ void loop() {
             printResult(result);
         }    
     }
+    int setpoint = 160; // Example: center of 320px image
+    float pidOutput = xPID.compute(setpoint, result.xOrigin);
+    Serial.print("PID Output: ");
+    Serial.println(pidOutput);
+    Move(pidOutput, -pidOutput);
 }
 
 void printResult(HUSKYLENSResult result){
@@ -66,4 +86,35 @@ void printResult(HUSKYLENSResult result){
     else{
         Serial.println("Object unknown!");
     }
+}
+
+void Move(int left, int right) {
+  if (left > 0) {
+    analogWrite(ma1, left);
+    digitalWrite(ma2, LOW);
+  } else if (left < 0) {
+    analogWrite(ma2, -left);
+    digitalWrite(ma1, LOW);
+  } else {
+    digitalWrite(ma1, LOW);
+    digitalWrite(ma2, LOW);
+  } 
+  
+  if (right > 0) {
+    analogWrite(mb1, right);
+    digitalWrite(mb2, LOW);
+  } else if (right < 0) {
+    analogWrite(mb2, -right);
+    digitalWrite(mb1, LOW);
+  } else {
+    digitalWrite(mb1, LOW);
+    digitalWrite(mb2, LOW);
+  }
+}
+
+void Stop() {
+  digitalWrite(ma1, HIGH);
+  digitalWrite(ma2, HIGH);
+  digitalWrite(mb1, HIGH);
+  digitalWrite(mb2, HIGH);
 }
