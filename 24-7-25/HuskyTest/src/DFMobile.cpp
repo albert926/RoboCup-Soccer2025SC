@@ -8,16 +8,21 @@
 #include <Arduino.h>
 #include "DFMobile.h"
 
-/*left_en: enable left pin
- right_en:enable right pin
- left_pwm:pwm speed of left wheel control
- right_pwm:pwm speed of right wheel control
- */
+const uint8_t ma1 = 3;
+const uint8_t ma2 = 2;
+const uint8_t mb1 = 5;
+const uint8_t mb2 = 6;
+
+// left_en: enable left pin
+// right_en:enable right pin
+// left_pwm:pwm speed of left wheel control
+// right_pwm:pwm speed of right wheel control
+
 DFMobile::DFMobile (uint8_t left_en, uint8_t left_pwm, uint8_t right_en, uint8_t right_pwm) {
-  _left_en = left_en;
-  _left_pwm = left_pwm;
-  _right_en = right_en;
-  _right_pwm = right_pwm;
+  _left_en = ma1;
+  _left_pwm = ma2;
+  _right_en = mb1;
+  _right_pwm = mb2;
   pinMode (_left_en, OUTPUT);
   pinMode (_left_pwm, OUTPUT);
   pinMode (_right_en, OUTPUT);
