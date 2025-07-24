@@ -34,8 +34,21 @@ const uint8_t ma2 = 2;
 const uint8_t mb1 = 5;
 const uint8_t mb2 = 6;
 
+uint8_t x;
+uint8_t y;
+uint8_t w;
+uint8_t h;
+uint8_t id;
+uint8_t x0;
+uint8_t y0;
+uint8_t x1;
+uint8_t y1;
+
+const uint8_t setpoint = 160; // Example: center of 320px image
+
 void Move(int left, int right);
 void Stop();
+void readHusky();
 
 void setup() {
     Serial.begin(115200);
@@ -69,8 +82,9 @@ void loop() {
             printResult(result);
         }    
     }
-    int setpoint = 160; // Example: center of 320px image
-    float pidOutput = xPID.compute(setpoint, result.xOrigin);
+
+    readHusky();
+    float pidOutput = xPID.compute(setpoint, x);
     Serial.print("PID Output: ");
     Serial.println(pidOutput);
     Move(pidOutput, -pidOutput);
@@ -117,4 +131,21 @@ void Stop() {
   digitalWrite(ma2, HIGH);
   digitalWrite(mb1, HIGH);
   digitalWrite(mb2, HIGH);
+}
+
+void readHusky() {
+    HUSKYLENSResult result = huskylens.read();
+    if (result.command == COMMAND_RETURN_BLOCK) {
+        x = result.xCenter;
+        y = result.yCenter;
+        w = result.width;
+        h = result.height;
+        id = result.ID;
+    } else if (result.command == COMMAND_RETURN_ARROW) {
+        x0 = result.xOrigin;
+        y0 = result.yOrigin;
+        x1 = result.xTarget;
+        y1 = result.yTarget;
+        id = result.ID;
+    }
 }
