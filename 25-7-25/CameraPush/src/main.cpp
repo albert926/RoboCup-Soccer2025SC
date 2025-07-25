@@ -55,6 +55,7 @@ void loop() {
     digitalWrite(abortLED, HIGH);
     digitalWrite(custLED, LOW);
     Stop();
+    while(InterStat) {}
   } else {
     roboStat = 1; // Continue running
     digitalWrite(abortLED, LOW);
@@ -71,10 +72,11 @@ void loop() {
     // Move(50, 50);
     digitalWrite(custLED, HIGH); // Make it high to indicate a sensed a ball
     seeBallFlag = 0; // Set it low, because we indicated it, INTER!
+    Serial.println("SAW BALL");
   } else {
     // Add find ball program here
     digitalWrite(custLED, LOW);  // Make it low, because it didn't see it
-    InterStat = !InterStat; //Interrupt, couldn't find ball, only add this for debug!
+    Serial.println("Couldn't find ball");
     Stop();
   }
 }
