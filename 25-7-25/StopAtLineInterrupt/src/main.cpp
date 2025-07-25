@@ -44,10 +44,13 @@ void setup() {
 void loop() {
     if(InterStat) {
       roboStat = 0; // Stop the robot
-      digitalWrite(abortLED, 255);
+      digitalWrite(abortLED, HIGH);
+      Serial.println("Abort!!!");
       Stop();
     } else {
       roboStat = 1; // Continue running
+      digitalWrite(abortLED, LOW);
+      Serial.println("Abort terminated.");
     }
   }
 
