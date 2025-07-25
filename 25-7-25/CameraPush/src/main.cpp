@@ -13,9 +13,16 @@ const uint8_t mb1 = 5;
 const uint8_t mb2 = 6;
 
 const uint8_t abortLED = 28;
+const uint8_t custLED = 29;
 
 const uint8_t startInterruptPin = 9;
 uint8_t roboStat = 1; // 1 for running, 0 for stopped
+
+HUSKYLENS huskylens;
+SoftwareSerial mySerial(1, 0); // RX, TX
+void printResult(HUSKYLENSResult result);
+
+const uint8_t setpoint = 160; // Example: center of 320px image
 
 volatile bool InterStat = 0;
 
@@ -32,9 +39,10 @@ void setup() {
     pinMode(mb1, OUTPUT);
     pinMode(mb2, OUTPUT);
     pinMode(abortLED, OUTPUT);
+    pinMode(custLED, OUTPUT);
     pinMode(startInterruptPin, INPUT_PULLUP);
 
-    while(digitalRead(startInterruptPin) == HIGH){
+    while(digitalRead(startInterruptPin) == HIGH){ 
     }
     Serial.println("HI!");
 
@@ -42,15 +50,34 @@ void setup() {
 }
 
 void loop() {
-    if(InterStat) {
-      roboStat = 0; // Stop the robot
-      digitalWrite(abortLED, HIGH);
-      Stop();
-    } else {
-      roboStat = 1; // Continue running
-      digitalWrite(abortLED, LOW);
-    }
+  if(InterStat) {
+    roboStat = 0; // Stop the robot
+    digitalWrite(abortLED, HIGH);
+    digitalWrite(custLED, LOW);
+    Stop();
+  } else {
+    roboStat = 1; // Continue running
+    digitalWrite(abortLED, LOW);
   }
+
+  static bool seeBallFlag = 0;
+  huskylens.requestBlocks(1); //Only pull the correct ID
+  if (huskylens.available()) { //Make sure its available
+    huskylens.read();
+    seeBallFlag = 1;
+  }
+
+  if (seeBallFlag) {
+    // Move(50, 50);
+    digitalWrite(custLED, HIGH); // Make it high to indicate a sensed a ball
+    seeBallFlag = 0; // Set it low, because we indicated it, INTER!
+  } else {
+    // Add find ball program here
+    digitalWrite(custLED, LOW);  // Make it low, because it didn't see it
+    InterStat = !InterStat; //Interrupt, couldn't find ball, only add this for debug!
+    Stop();
+  }
+}
 
 void Move(int left, int right) {
   if (left > 0) {
