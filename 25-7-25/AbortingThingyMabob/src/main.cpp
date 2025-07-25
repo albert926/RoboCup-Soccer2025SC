@@ -45,12 +45,10 @@ void loop() {
     if(InterStat) {
       roboStat = 0; // Stop the robot
       digitalWrite(abortLED, HIGH);
-      Serial.println("Abort!!!");
       Stop();
     } else {
       roboStat = 1; // Continue running
       digitalWrite(abortLED, LOW);
-      Serial.println("Abort terminated.");
     }
   }
 
@@ -88,4 +86,9 @@ void Stop() {
 void toggleInter()
 {
   InterStat = !InterStat;
+  if(InterStat) {
+      Serial.println("Abort!!!");
+  } else {
+      Serial.println("Abort terminated.");
+  }
 }
