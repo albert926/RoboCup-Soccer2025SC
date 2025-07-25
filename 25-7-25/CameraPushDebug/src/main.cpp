@@ -50,17 +50,6 @@ void setup() {
 }
 
 void loop() {
-  if(InterStat) {
-    roboStat = 0; // Stop the robot
-    digitalWrite(abortLED, HIGH);
-    digitalWrite(custLED, LOW);
-    Stop();  
-    while(InterStat) {}
-  } else {
-    roboStat = 1; // Continue running
-    digitalWrite(abortLED, LOW); 
-  }
-
   static bool seeBallFlag = 0;
   huskylens.requestBlocks(1); //Only pull the correct ID
   if (huskylens.available()) { //Make sure its available
@@ -115,9 +104,4 @@ void Stop() {
 void toggleInter()
 {
   InterStat = !InterStat;
-  if(InterStat) {
-      Serial.println("Abort!!!");
-  } else {
-      Serial.println("Abort terminated.");
-  }
 }
