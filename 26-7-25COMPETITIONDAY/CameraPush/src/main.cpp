@@ -59,6 +59,8 @@ void setup() {
 }
 
 void loop() {
+  while(!roboStat){delay(10); digitalWrite(custLED, LOW);}
+
   static bool seeBallFlag = 0;
   huskylens.requestBlocks(1); //Only pull the correct ID
   if (huskylens.available()) { //Make sure its available
