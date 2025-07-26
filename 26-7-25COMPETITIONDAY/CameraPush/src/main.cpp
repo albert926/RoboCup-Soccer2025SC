@@ -34,7 +34,6 @@ void toggleInter();
 
 void setup() {
     Serial.begin(115200);
-    mySerial.begin(9600);
     pinMode(ma1, OUTPUT);
     pinMode(ma2, OUTPUT);
     pinMode(mb1, OUTPUT);
@@ -43,7 +42,6 @@ void setup() {
     pinMode(custLED, OUTPUT);
     pinMode(startInterruptPin, INPUT_PULLUP);
 
-    
     while (!huskylens.begin(mySerial))
     {
         Serial.println(F("Begin failed!"));
@@ -51,7 +49,7 @@ void setup() {
         Serial.println(F("2.Please recheck the connection."));
         delay(100);
     }
-    
+
     while(digitalRead(startInterruptPin) == HIGH){ 
     }
     Serial.println("HI!");
@@ -62,11 +60,10 @@ void setup() {
 void loop() {
   static bool seeBallFlag = 0;
   huskylens.requestBlocks(1); //Only pull the correct ID
-  // if (huskylens.available()) {
-  //   huskylens.read();
-  //   seeBallFlag = 1;
-  // }
-  Serial.println(huskylens.available());
+  if (huskylens.available()) { //Make sure its available
+    huskylens.read();
+    seeBallFlag = 1;
+  }
 
   if (seeBallFlag) {
     // Move(50, 50);
@@ -115,4 +112,15 @@ void Stop() {
 void toggleInter()
 {
   InterStat = !InterStat;
+  if(InterStat) {
+      Serial.println("Abort!!!");
+      roboStat = 0; // Stop the robot
+      digitalWrite(abortLED, HIGH);
+      digitalWrite(custLED, LOW);
+      Stop();  
+  } else {
+      Serial.println("Abort terminated.");
+      roboStat = 1; // Continue running
+      digitalWrite(abortLED, LOW); 
+  }
 }
