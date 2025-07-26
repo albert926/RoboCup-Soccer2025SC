@@ -34,6 +34,7 @@ void toggleInter();
 
 void setup() {
     Serial.begin(115200);
+    mySerial.begin(9600);
     pinMode(ma1, OUTPUT);
     pinMode(ma2, OUTPUT);
     pinMode(mb1, OUTPUT);
