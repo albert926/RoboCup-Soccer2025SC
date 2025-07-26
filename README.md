@@ -27,7 +27,7 @@ Official RoboCup website:
 ## 🌐 Slightly More Boring Stuff
 
 - [alberttalkstech.com](https://www.alberttalkstech.com) – A site with things.
-- [alberttalkstech.com/git](https://git.alberttalkstech.com) – Where all the repositories live. Not this one.
+- [git.alberttalkstech.com](https://git.alberttalkstech.com) – Where all the repositories live. Not this one.
 
 ---
 
