@@ -73,8 +73,16 @@ void loop() {
     digitalWrite(custLED, HIGH); // Make it high to indicate a sensed a ball
     seeBallFlag = 0; // Set it low, because we indicated it, INTER!
     Serial.println("SAW BALL");
+    Stop();
+    delay(1000); // Wait for a second
+    Move(50, 50); // Move forward
+    
+    //Wait an eternity for the robot to push the ball
   } else {
     // Add find ball program here
+
+    Move(40, -40); //Find ball by turning
+
     digitalWrite(custLED, LOW);  // Make it low, because it didn't see it
     Serial.println("Couldn't find ball");
     Stop();
