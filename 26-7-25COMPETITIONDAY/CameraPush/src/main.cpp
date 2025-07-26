@@ -12,6 +12,8 @@ const uint8_t ma2 = 2;
 const uint8_t mb1 = 5;
 const uint8_t mb2 = 6;
 
+const uint8_t line = 8; // Line sensor pin
+
 const uint8_t abortLED = 28;
 const uint8_t custLED = 29;
 
@@ -39,6 +41,7 @@ void setup() {
     pinMode(ma2, OUTPUT);
     pinMode(mb1, OUTPUT);
     pinMode(mb2, OUTPUT);
+    pinMode(line, INPUT);
     pinMode(abortLED, OUTPUT);
     pinMode(custLED, OUTPUT);
     pinMode(startInterruptPin, INPUT_PULLUP);
@@ -59,7 +62,7 @@ void setup() {
 }
 
 void loop() {
-  while(!roboStat){delay(10); digitalWrite(custLED, LOW);}
+  while(!roboStat){delay(10); digitalWrite(custLED, LOW); Stop();}
 
   static bool seeBallFlag = 0;
   huskylens.requestBlocks(1); //Only pull the correct ID
@@ -69,23 +72,30 @@ void loop() {
   }
 
   if (seeBallFlag) {
-    // Move(50, 50);
     digitalWrite(custLED, HIGH); // Make it high to indicate a sensed a ball
     seeBallFlag = 0; // Set it low, because we indicated it, INTER!
     Serial.println("SAW BALL");
+    delay(300); // Wait for a bit to stabilize
     Stop();
-    delay(1000); // Wait for a second
     Move(50, 50); // Move forward
+
+    while(digitalRead(line) == LOW) { // Wait for the line sensor to be triggered
+      delay(10);
+    }
     
+    Serial.println("Line sensor triggered, stopping robot.");
+    Stop(); // Stop the robot when the line sensor is triggered
+    digitalWrite(custLED, LOW); // Turn off the custom LED
+    toggleInter(); // Toggle the interrupt state
+
     //Wait an eternity for the robot to push the ball
   } else {
     // Add find ball program here
 
-    Move(40, -40); //Find ball by turning
-
     digitalWrite(custLED, LOW);  // Make it low, because it didn't see it
     Serial.println("Couldn't find ball");
     Stop();
+    Move(60, -60); // Find ball by turning
   }
 }
 
@@ -94,22 +104,16 @@ void Move(int left, int right) {
     analogWrite(ma1, left);
     digitalWrite(ma2, LOW);
   } else if (left < 0) {
-    analogWrite(ma2, -left);
+    analogWrite(ma2, left);
     digitalWrite(ma1, LOW);
-  } else {
-    digitalWrite(ma1, LOW);
-    digitalWrite(ma2, LOW);
-  } 
+  }
   
   if (right > 0) {
-    analogWrite(mb1, right);
-    digitalWrite(mb2, LOW);
+    digitalWrite(mb1, LOW);
+    analogWrite(mb2, right);
   } else if (right < 0) {
-    analogWrite(mb2, -right);
-    digitalWrite(mb1, LOW);
-  } else {
-    digitalWrite(mb1, LOW);
     digitalWrite(mb2, LOW);
+    analogWrite(mb1, right);
   }
 }
 
