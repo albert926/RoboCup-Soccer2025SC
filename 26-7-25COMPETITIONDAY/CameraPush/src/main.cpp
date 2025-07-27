@@ -2,6 +2,8 @@
 This is a code
 */
 
+bool debug = true; // Set to true to enable debug
+
 #include "Arduino.h"
 #include "HUSKYLENS.h"
 #include "SoftwareSerial.h"
@@ -51,12 +53,14 @@ void setup() {
     pinMode(custLED, OUTPUT);
     pinMode(startInterruptPin, INPUT_PULLUP);
 
-    while (!huskylens.begin(mySerial))
-    {
-        Serial.println(F("Begin failed!"));
-        Serial.println(F("1.Please recheck the \"Protocol Type\" in HUSKYLENS (General Settings>>Protocol Type>>Serial 9600)"));
-        Serial.println(F("2.Please recheck the connection."));
-        delay(100);
+    if(debug) {
+      while (!huskylens.begin(mySerial))
+      {
+          Serial.println(F("Begin failed!"));
+          Serial.println(F("1.Please recheck the \"Protocol Type\" in HUSKYLENS (General Settings>>Protocol Type>>Serial 9600)"));
+          Serial.println(F("2.Please recheck the connection."));
+          delay(100);
+      }
     }
 
     while(digitalRead(startInterruptPin) == HIGH){ 
