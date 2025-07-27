@@ -32,6 +32,11 @@ void Move(int left, int right);
 void Stop();
 void readHusky();
 
+uint8_t speed = 50;
+unsigned long lastSpeedUpdate = millis();
+
+bool timeMove = true; // Set to true to enable speed increase on line sensor trigger
+
 void toggleInter();
 
 void setup() {
@@ -75,12 +80,26 @@ void loop() {
     digitalWrite(custLED, HIGH); // Make it high to indicate a sensed a ball
     seeBallFlag = 0; // Set it low, because we indicated it, INTER!
     Serial.println("SAW BALL");
-    delay(300); // Wait for a bit to stabilize
+    delay(100); // Wait for a bit to stabilize
     Stop();
     Move(50, 50); // Move forward
 
-    while(digitalRead(line) == LOW) { // Wait for the line sensor to be triggered
-      delay(10);
+    if(!timeMove) {
+      while(digitalRead(line) == LOW) { // Wait for the line sensor to be triggered
+        delay(10);
+      }
+    }
+
+    if(timeMove) {
+      while(digitalRead(line) == LOW) { // Wait for the line sensor to be triggered
+        if (millis() - lastSpeedUpdate >= 1000) { // Every second
+          speed += 10;
+          if (speed > 255) speed = 255; // Cap at max PWM value
+          Move(speed, speed);
+          lastSpeedUpdate = millis();
+        }
+        delay(10);
+      }
     }
     
     Serial.println("Line sensor triggered, stopping robot.");
